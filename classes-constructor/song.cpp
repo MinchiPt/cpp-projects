@@ -6,8 +6,8 @@ Song::Song(std::string new_title, std::string new_artist)
 
 // add the Song destructor here:
 
-Song::~Song() {
-  std::cout << "Goodbye, " << title << "\n";
+Song::~Song(std::string song_title) {
+  std::cout << "Goodbye" << song_title;
 }
 
 std::string Song::get_title() {
