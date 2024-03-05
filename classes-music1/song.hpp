@@ -1,10 +1,13 @@
-#include <string>
+#include<string>
 
-class Song
-{
-    std::string title;
+class Song {
+  std::string title;
+  std::string artist;
 
-public:
-    void add_title(std::string new_title);
-    std::string get_title();
+  public:
+    Song (std::string title, std::string artist);
+    ~Song ();
+
+    std::string get_title ();
+    std::string get_artist ();
 };

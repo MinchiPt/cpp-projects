@@ -1,10 +1,9 @@
-#include <iostream>
+#include<iostream>
 #include "song.hpp"
 
-int main()
-{
-    Song song;
+int main() {
 
-    song.add_title("TTTT\n");
-    std::cout << song.get_title();
+  Song shines ("shines", "George");
+  std::cout << "Title: " << shines.get_title() << "\n";
+  std::cout << "Artist: " << shines.get_artist() << "\n";
 }
