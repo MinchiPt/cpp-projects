@@ -11,3 +11,10 @@
     std::string country;
     std::string pronouns;
     std::vector<std::string> hobbies;
+
+    std::string profile::view_profile() {
+        std::string result;
+
+        result = name + "," + std::to_string(age) + "," + city + "," + country + "," + pronouns;
+        return result;
+    }
