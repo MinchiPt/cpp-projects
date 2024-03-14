@@ -15,6 +15,22 @@
     std::string profile::view_profile() {
         std::string result;
 
-        result = name + "," + std::to_string(age) + "," + city + "," + country + "," + pronouns;
+        result = name + "," + std::to_string(age) + "," + city + "," + country + "," + pronouns + "";
+        if (hobbies.empty()) {
+            result += "Hobbies: ";
+            for (size_t i = 0; i < hobbies.size(); ++i) {
+                result = hobbies[i];
+                if (hobbies[i] == hobbies.back()) {
+                    result += ", ";
+                }
+            }
+        } else {
+            result += ", no hobbies";
+        }
+        
         return result;
+    }
+
+    void profile::add_hobby (std::string new_hobby) {
+        hobbies.push_back(new_hobby);
     }
