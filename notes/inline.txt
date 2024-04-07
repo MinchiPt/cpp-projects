@@ -1,0 +1,9 @@
+Inline
+
+In C++, the `inline` keyword is a suggestion to the compiler that a function's code should be inserted at each point the function is called, rather than being called through the usual function call mechanism.
+
+Traditionally, when a function is invoked, the program's execution must jump to the location of the function, execute its code, and then jump back to the point where the function was called. This incurs some overhead due to the jump and the function call's setup (like stacking parameters, storing registers, etc.). For small functions that are called frequently, this overhead can be significant relative to the actual work the function does.
+
+When you declare a function as `inline`, you are suggesting to the compiler that it would be more efficient to avoid the function call overhead by inserting the function's code directly into the calling code. This can potentially reduce the overhead but may increase the size of the binary because the code for the function is duplicated in every place that it's called.
+
+

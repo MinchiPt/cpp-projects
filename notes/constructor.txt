@@ -1,0 +1,61 @@
+# Constructor
+
+The code snippet you've provided is a C++ constructor for a class named `Song`. Constructors are special member functions of a class that are called when a new object of that class is created. Let's break down the syntax:
+
+```cpp
+Song::Song(std::string new_title, std::string new_artist)
+    : title(new_title), artist(new_artist)
+{
+}
+
+```
+
+- `Song::Song`: This indicates that the function is a constructor of the class `Song`. The `Song::` prefix specifies that the `Song` function is a member of the `Song` class, and since the function name is the same as the class, it is a constructor.
+- `(std::string new_title, std::string new_artist)`: This is the parameter list of the constructor. It takes two parameters, both of which are of the `std::string` type. `new_title` is intended to represent the title of the song, and `new_artist` represents the artist of the song.
+- `: title(new_title), artist(new_artist)`: This is the member initializer list. It initializes the member variables of the class with the values provided through the constructor parameters. The `title` and `artist` are presumably member variables of the `Song` class, and they are being directly initialized with `new_title` and `new_artist`, respectively. This is more efficient than assignment inside the constructor body because it initializes the members directly rather than default-initializing them first and then assigning to them.
+- `{}`: This is the body of the constructor. In this case, the body is empty because all the work needed in the constructor is being done in the member initializer list. Even with an empty body, the member variables `title` and `artist` will still be initialized properly.
+
+So, to summarize, this constructor initializes a `Song` object with a specific title and artist. When you create a new `Song`, you would do something like this:
+
+```cpp
+Song mySong("Stairway to Heaven", "Led Zeppelin");
+
+```
+
+This would invoke the `Song` constructor, initializing the `mySong` object's `title` member to `"Stairway to Heaven"` and the `artist` member to `"Led Zeppelin"`.
+
+// city.hpp
+
+#include "city.hpp"
+
+class City {
+
+std::string name;
+
+int population;
+
+public:
+
+City(std::string new_name, int new_pop);
+
+};
+
+// city.cpp
+
+City::City(std::string new_name, int new_pop)
+
+// members get initialized to values passed in
+
+: name(new_name), population(new_pop) {}
+
+City::City(std::string new_name, int new_pop) {
+
+name = new_name;
+
+population = new_pop;
+
+}
+
+**// inside main()**
+
+**City ankara("Ankara", 5445000);**

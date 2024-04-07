@@ -1,0 +1,101 @@
+# Classes
+
+music.cpp
+
+```cpp
+#include<iostream>
+#include "song.hpp"
+
+int main () {
+    Song song;
+
+    song.add_title("TTTT\n");
+    std::cout << song.get_title();    
+}
+```
+
+song.hpp
+
+```cpp
+#include <string>
+
+class Song {
+    std::string title;
+
+    public:
+    void add_title(std::string new_title);
+    std::string get_title(); 
+};
+```
+
+song.cpp
+
+```cpp
+#include "song.hpp"
+
+void Song::add_title(std::string new_title) {
+    Song::title = new_title;
+}
+
+std::string Song::get_title() {
+    return Song::title;
+}
+```
+
+The three files you've provided (`song.hpp`, `song.cpp`, and `music.cpp`) are part of a simple C++ program. Their structural relationship can be described as follows:
+
+### `song.hpp` - Header File
+
+This is the header file for the `Song` class. It declares the class and the public interface for the class. The class has one private member variable:
+
+- `std::string title;` - a `std::string` to hold the title of the song.
+
+The class also declares two public member functions:
+
+- `void add_title(std::string new_title);` - a function to set the title of the song.
+- `std::string get_title();` - a function to get the title of the song.
+
+### `song.cpp` - Implementation File
+
+This file provides the implementation of the `Song` class that is declared in `song.hpp`. It includes the header file `song.hpp` for the class declaration and defines the two member functions:
+
+- `void Song::add_title(std::string new_title)` - This function assigns the `new_title` value to the `title` member variable of the `Song` class.
+- `std::string Song::get_title()` - This function returns the current value of the `title` member variable of the `Song` class.
+
+### `music.cpp` - Main Program
+
+This file is the entry point of the program. It includes two things:
+
+- The header file `song.hpp` to use the `Song` class.
+- The standard library header file `iostream` to perform input and output operations.
+
+The `main()` function in `music.cpp`:
+
+1. Creates an instance of the `Song` class named `song`.
+2. Calls the `add_title` member function to set the title of the song to "TTTT\n".
+3. Uses `std::cout` to print the title of the song by calling the `get_title` member function of the `Song` class.
+
+By including `song.hpp`, the `main()` function in `music.cpp` can use the `Song` class, because the compiler knows about the `Song` class's interface from the header file. The actual implementations of `Song`'s member functions are in `song.cpp`, which the linker will use to resolve the member function calls when creating the final executable.
+
+When you compile this program, the compiler will compile `song.cpp` and `music.cpp` separately into object files, usually with a `.o` or `.obj` extension. The linker will then link these object files together, along with the C++ standard library and runtime, to produce the final executable program. If you have all three files in the same directory, the compilation command might look something like this:
+
+```
+g++ -o music song.cpp music.cpp
+
+```
+
+And you would run the program with:
+
+```
+./music
+
+```
+
+It would output:
+
+```
+TTTT
+
+```
+
+to the terminal because `song.get_title()` returns the song title with the newline character `'\\n'` appended to it in the `add_title` function call.

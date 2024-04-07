@@ -1,0 +1,266 @@
+# Templates
+
+```cpp
+#include <iostream>
+
+template <typename T>
+T max(T a, T b)
+{
+    return (a > b) ? a : b;
+}
+
+int main()
+{
+    std::cout << "\n";
+    std::cout << max(3, 2) << "\n";
+} 
+
+(returns 3)
+```
+
+Templates in C++ are a powerful feature that allows you to write generic and reusable code. They enable you to create classes and functions that work with any data type. This is accomplished by defining templates with placeholders (typically denoted by the `typename` or `class` keyword) that can be substituted with actual data types at compile time.
+
+There are two kinds of templates in C++:
+
+1. **Function Templates**: These allow you to create functions that can operate with any data type.
+2. **Class Templates**: These allow you to define classes like stacks, queues, arrays, linked lists, etc., that can operate with any data type.
+
+### Function Templates
+
+Function templates are defined using the `template` keyword followed by template parameter(s) inside angle brackets `<>`. Here's a simple example of a function template:
+
+```cpp
+template <typename T>
+T max(T a, T b) {
+    return (a > b) ? a : b;
+}
+
+```
+
+In this example, `T` is a placeholder for a data type that will be specified when the function is called. You could use this `max` function with `int`, `double`, or even user-defined types, assuming the greater-than operator (`>`) is defined for them.
+
+### Class Templates
+
+Class templates are similar but are used to define generic classes. Here’s an example of a simple class template:
+
+```cpp
+template <typename T>
+class Box {
+public:
+    Box(T value) : contents(value) {}
+
+    T getContents() {
+        return contents;
+    }
+
+private:
+    T contents;
+};
+
+```
+
+You can create a `Box` object to store any type:
+
+```cpp
+Box<int> intBox(123);
+Box<std::string> stringBox("Hello World");
+
+```
+
+### Non-Type Template Parameters
+
+Templates can also have non-type parameters, which are not placeholders for data types but rather actual values (like `int`). Here's an example:
+
+```cpp
+template <typename T, int size>
+class StaticArray {
+    private:
+        T array[size];
+    public:
+        T& operator[](int index) {
+            return array[index];
+        }
+        // ... other members ...
+};
+
+```
+
+You can create an instance of `StaticArray` for a specific type and size:
+
+```cpp
+StaticArray<int, 5> myArray; // An array of 5 integers
+
+```
+
+### Template Specialization
+
+Sometimes, you may want a specific implementation for a particular data type. This is possible with template specialization, which lets you define a separate template behavior for a given data type. An example of this would be if you wanted a specific implementation for a `char` pointer:
+
+```cpp
+template <>
+const char* max(const char* a, const char* b) {
+    return strcmp(a, b) > 0 ? a : b;
+}
+
+```
+
+This specialization of the `max` function template is specifically for `const char*`, comparing C-style strings.
+
+### Advantages of Templates
+
+- **Type Safety**: Templates provide type safety since you write the type-independent code once and the compiler ensures that it is instantiated correctly for each type.
+- **Reusability**: Write generic algorithms that work on different data types.
+- **Performance**: Templates are expanded at compile time, which often leads to faster code compared to dynamic polymorphism.
+
+### Considerations
+
+- **Code Bloat**: Since templates generate code for each instantiated type, this can lead to larger binary sizes.
+- **Compile Time**: As template code grows, it can increase compile times.
+- **Complexity**: Template metaprogramming can be complex and lead to difficult-to-read code.
+
+Templates are a foundational feature of C++ that contribute to its power and flexibility, enabling a wide range of programming techniques including generic programming and metaprogramming.
+
+```cpp
+#include <iostream>
+
+template <typename T>
+T max(T a, T b)
+{
+    return (a > b) ? a : b;
+}
+
+int main()
+{
+    std::cout << "\n";
+    std::cout << max(1.2, 2) << "\n";
+}
+```
+
+Apologies for the earlier confusion. The error message you are seeing indicates that the compiler is unable to deduce a single type `T` for the template parameter because the arguments provided to `max` are of different types (`double` and `int`).
+
+In the line `std::cout << max(1.2, 2) << "\\n";`, `1.2` is a `double` literal, and `2` is an `int` literal. When you call the function template with these two different types, the compiler cannot implicitly cast one to the other without explicit instruction because it cannot decide whether you want to perform the operation in `int` or `double`.
+
+To resolve this, you need to ensure that both arguments are of the same type or explicitly specify the template argument. Here are two ways to fix the error:
+
+1. **Explicit Template Argument**
+You can specify the template argument explicitly, which would look like this:
+    
+    ```cpp
+    std::cout << max<double>(1.2, 2) << "\\n";
+    
+    ```
+    
+    By specifying `<double>` explicitly, you are indicating that `T` should be a `double`, so the integer `2` will be promoted to a `double` before the function is called.
+    
+2. **Type Casting**
+Alternatively, you can cast one of the arguments to match the type of the other:
+    
+    ```cpp
+    std::cout << max(1.2, static_cast<double>(2)) << "\\n";
+    
+    ```
+    
+    Here, `static_cast<double>(2)` casts the integer `2` to a `double` so that both arguments are now of type `double`, and there is no ambiguity for the compiler.
+    
+
+Either of these solutions will allow your code to compile and run, producing the correct output.
+
+Using `std::string` in templates isn't a universal solution for handling different types because `std::string` is specific to text data. When dealing with numerical values of different types, as in your `max` function example, using `std::string` would not be appropriate or effective. Templates are designed to work with any type, but each instance of a template must work with a single, specific type, which means all the template parameters need to be of that type.
+
+If you want to create a `max` function template that can handle different types, you can consider the following:
+
+1. **Overloading**: Create different overloads of the `max` function for different types. This is not using templates per se but can solve the problem for a limited set of known types.
+2. **Common Type**: Use `std::common_type` to deduce a common type to which the arguments can be converted. This would require a more advanced template technique:
+    
+    ```cpp
+    #include <iostream>
+    #include <type_traits>
+    
+    template <typename T1, typename T2>
+    auto max(T1 a, T2 b) -> typename std::common_type<T1, T2>::type {
+        return (a > b) ? a : b;
+    }
+    
+    int main() {
+        std::cout << "\\n";
+        std::cout << max(1.2, 2) << "\\n";  // This will now compile and run.
+    }
+    
+    ```
+    
+    In this version, `max` uses `auto` for the return type, and `std::common_type` is used to deduce the type that both `T1` and `T2` can be converted to. This allows you to pass two different types to `max`, and the return type will be a common type that can hold either of the values.
+    
+3. **Explicit Cast**: As previously mentioned, you can cast one of the parameters to match the type of the other, or explicitly specify the template argument.
+
+Using `std::string` would only be a solution if your function is meant to work specifically with textual data, and even then, you would have to convert numerical arguments to `std::string` before comparison, which may not be meaningful for maximum value calculations.
+
+In conclusion, there is no one-size-fits-all solution to handling different types in templates, and the best approach depends on the specific requirements of the function and the types it needs to support.
+
+Using `std::string` in templates isn't a universal solution for handling different types because `std::string` is specific to text data. When dealing with numerical values of different types, as in your `max` function example, using `std::string` would not be appropriate or effective. Templates are designed to work with any type, but each instance of a template must work with a single, specific type, which means all the template parameters need to be of that type.
+
+If you want to create a `max` function template that can handle different types, you can consider the following:
+
+1. **Overloading**: Create different overloads of the `max` function for different types. This is not using templates per se but can solve the problem for a limited set of known types.
+2. **Common Type**: Use `std::common_type` to deduce a common type to which the arguments can be converted. This would require a more advanced template technique:
+    
+    ```cpp
+    #include <iostream>
+    #include <type_traits>
+    
+    template <typename T1, typename T2>
+    auto max(T1 a, T2 b) -> typename std::common_type<T1, T2>::type {
+        return (a > b) ? a : b;
+    }
+    
+    int main() {
+        std::cout << "\\n";
+        std::cout << max(1.2, 2) << "\\n";  // This will now compile and run.
+    }
+    
+    ```
+    
+    In this version, `max` uses `auto` for the return type, and `std::common_type` is used to deduce the type that both `T1` and `T2` can be converted to. This allows you to pass two different types to `max`, and the return type will be a common type that can hold either of the values.
+    
+3. **Explicit Cast**: As previously mentioned, you can cast one of the parameters to match the type of the other, or explicitly specify the template argument.
+
+Using `std::string` would only be a solution if your function is meant to work specifically with textual data, and even then, you would have to convert numerical arguments to `std::string` before comparison, which may not be meaningful for maximum value calculations.
+
+In conclusion, there is no one-size-fits-all solution to handling different types in templates, and the best approach depends on the specific requirements of the function and the types it needs to support.
+
+The line `auto max(T1 a, T2 b) -> typename std::common_type<T1, T2>::type` is an example of a function template in C++ that uses a trailing return type to specify the return type of the function based on the types of the arguments passed to it. Let's break it down:
+
+- `auto`: This specifies that the return type of the `max` function will be automatically deduced by the compiler. In C++11 and later, `auto` can also be used in conjunction with trailing return type syntax.
+- `max(T1 a, T2 b)`: This declares a function template `max` that takes two parameters, `a` and `b`. The types of `a` and `b` are template parameters `T1` and `T2`, respectively. These could be any types, and they don't have to be the same.
+- `>`: This is the syntax for the trailing return type in C++. It's used here because the return type depends on the types of the function parameters, and those types are not known until the template is instantiated.
+- `typename`: This keyword is necessary because `std::common_type<T1, T2>::type` is a dependent name (its exact meaning depends on the template parameters `T1` and `T2`), and we need to tell the compiler that `type` is a type, not a value or a function.
+- `std::common_type<T1, T2>::type`: This is a type trait from the C++ standard library header `<type_traits>`. It deduces the common type that two types `T1` and `T2` can both be implicitly converted to. For example, if `T1` is `int` and `T2` is `double`, then `std::common_type<int, double>::type` would be `double`.
+
+Putting it all together, the function `max` can be called with two arguments of possibly different types, and it will return the larger of the two in a type that both arguments can be converted to. For example, if you call `max(1, 2.5)`, the function will return a `double` with the value `2.5`.
+
+Here's an example usage of this template function:
+
+```cpp
+int main() {
+    auto result = max(3, 4.5); // result will be of type double, with the value 4.5
+    std::cout << result << '\\n';
+    return 0;
+}
+
+```
+
+In this case, `T1` is `int` and `T2` is `double`, so `std::common_type<int, double>::type` will be `double`, and thus the function `max` will return a `double`.
+
+Here is an example of an inline function:
+
+```cpp
+inline int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+```
+
+This is a simple function that could benefit from being inlined, especially if it is used within a performance-critical part of the code where it is called many times.
+
+However, it's important to note that the `inline` keyword is merely a request to the compiler. Compilers are free to ignore this request if they determine that inlining a function would not lead to performance improvements, or if it would lead to excessive code bloat. In modern compilers, optimization algorithms typically decide whether to inline a function based on complex heuristics or explicit user-provided optimization settings, so the `inline` keyword is less critical than it used to be.
+
+Additionally, the `inline` keyword serves a second purpose in C++: it allows you to define functions in a header file without violating the One Definition Rule (ODR). Since the function is defined inline, it can be included in multiple translation units without causing linker errors. This is particularly useful for templates, which are often defined in header files.

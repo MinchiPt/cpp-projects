@@ -1,0 +1,24 @@
+# Operator - (a > b) ? a : b
+
+The expression `(a > b) ? a : b` in the code is an example of the conditional operator, which is also known as the ternary operator. This operator is a shorthand for an if-else statement and is the only operator in C++ that takes three operands:
+
+- The first operand `(a > b)` is a condition that evaluates to a boolean value (`true` or `false`).
+- The second operand `a` is the value that will be returned if the condition is `true`.
+- The third operand `b` is the value that will be returned if the condition is `false`.
+
+So, the expression `(a > b) ? a : b` can be read as "if `a` is greater than `b`, then return `a`, otherwise return `b`." This is a concise way to return the maximum of the two values `a` and `b`. If `a` is greater, `a` is returned; if not, `b` is returned.
+
+Here's the equivalent code using an if-else statement to make this clearer:
+
+```cpp
+int max(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+```
+
+The ternary operator is often used to make the code more compact, especially in simple conditional assignments or returns.
